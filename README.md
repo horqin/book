@@ -1,6 +1,6 @@
 # 简介
 
-一个支持用户注册、登录、登出，商品新增、删除、修改、查询，以及基于 ES 简单搜索的系统。基于 Spring Boot 和 Vue 3 实现，其中，用户部分基于 Sa-Token，ES 与 MySQL 之间的数据同步基于 Canal。
+一个支持用户注册、登录、登出，文献新增、删除、修改、查询，以及基于 ES 简单搜索的系统。基于 Spring Boot 和 Vue 3 实现，其中，用户部分基于 Sa-Token，ES 与 MySQL 之间的数据同步基于 Canal。
 
 ![](./img/book-simple_search.png)
 
@@ -46,6 +46,7 @@
 |:-:|:-:|:-:|
 |VMware Workstation Pro|虚拟机||
 |XShell|Shell 客户端||
+|SQLyog| SQL 客户端||
 |Docker|项目部署||
 |IntelliJ IDEA|IDE||
 |Visual Studio Code|IDE||

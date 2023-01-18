@@ -144,7 +144,7 @@ async function onInsert() {
 </script>
 
 <template>
-  <a-page-header title="文章管理">
+  <a-page-header title="文献管理">
     <template #extra>
       <a-button type="primary" @click="onClick">登出</a-button>
     </template>
