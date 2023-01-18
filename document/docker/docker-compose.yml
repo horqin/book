@@ -1,0 +1,66 @@
+version: '2'
+
+services:
+
+  # sql
+  mysql:
+    image: mysql:8.0.29
+    ports:
+      - 3306:3306
+    volumes:
+      - ./conf/my.cnf:/etc/mysql/my.cnf # Binlog
+      - ./data/mysql/:/var/lib/mysql/ # MySQL 持久化
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+  canal:
+    image: canal/canal-server:v1.1.6
+    ports:
+      - 11111:11111
+    environment:
+      # sql
+      - canal.instance.master.address=mysql:3306
+      - canal.instance.dbUsername=root
+      - canal.instance.dbPassword=root
+      - canal.instance.filter.regex=db.t_book
+      # mq
+      - canal.serverMode=kafka
+      - canal.mq.servers=kafka:9092
+      - canal.mq.topic=book-topic
+      - canal.mq.flatMessage=true
+    depends_on:
+      - mysql
+      - kafka
+  
+  # nosql
+  elasticsearch:
+    image: elasticsearch:7.17.7
+    ports: 
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./plug/elasticsearch-analysis-ik/:/usr/share/elasticsearch/plugins/elasticsearch-analysis-ik/ # IK 分词器
+      - ./data/elasticsearch/:/usr/share/elasticsearch/data/ # Elasticsearch 持久化
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
+  # mq
+  zookeeper:
+    image: bitnami/zookeeper:3.8.0
+    ports:
+      - 2181:2181
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: bitnami/kafka:3.3.1
+    ports:
+      - 9093:9093
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://centos:9093
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - zookeeper
