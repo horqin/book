@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SaTokenConfig {
 
-    @Value("${properties.whitelists}")
-    private String whitelists;
+    @Value("${properties.whitelist}")
+    private String whitelist;
 
     @Bean
     public SaServletFilter saServletFilter() {
@@ -22,7 +22,7 @@ public class SaTokenConfig {
                 // 允许跨域
                 .setBeforeAuth(auth -> SaHolder.getResponse().setHeader("X-XSS-Protection", "1; mode=block"))
                 // 认证检查
-                .setAuth(auth -> SaRouter.match("/**").notMatch(whitelists).check(StpUtil::checkLogin))
+                .setAuth(auth -> SaRouter.match("/**").notMatch(whitelist).check(StpUtil::checkLogin))
                 // 异常处理
                 .setError(e -> SaResult.error(e.getMessage()));
     }

@@ -15,4 +15,4 @@ spring:
 
 properties:
   salt: salt
-  whitelists: /user/**
+  whitelist: /user/**
