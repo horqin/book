@@ -5,7 +5,7 @@ import {message} from "ant-design-vue";
 import router from "../router";
 import Book from "../domain/Book"
 import {logout} from "../api/user";
-import {create, drop, update, searchWithPage, searchWithSimplePage} from "../api/book";
+import {create, deleteById, updateById, readBatchByPage, readBatchByPageWithKeyword} from "../api/book";
 
 // 关键词
 const keyword = ref("")
@@ -36,21 +36,15 @@ const book = reactive({
 onMounted(onSearch)
 
 async function onClick() {
-  const r = await logout()
-  if (r.code == 200) {
-    // 成功，跳转 UserPage
-    message.info("登出成功")
-    await router.replace("/user")
-  } else {
-    // 失败
-    message.warn(r.msg)
-  }
+  await logout()
+  message.info("登出成功")
+  await router.replace("/user")
 }
 
 async function onSearch() {
   if (keyword.value.length === 0) {
     // 搜索
-    const r = await searchWithPage(page.current, page.size)
+    const r = await readBatchByPage(page.current, page.size)
     if (r.code == 200) {
       // 成功
       page.pages = r.data.pages
@@ -62,7 +56,7 @@ async function onSearch() {
     }
   } else {
     // 简单搜索
-    const r = await searchWithSimplePage(keyword.value, page.current, page.size)
+    const r = await readBatchByPageWithKeyword(keyword.value, page.current, page.size)
     if (r.code == 200) {
       // 成功
       page.pages = r.data.pages
@@ -96,7 +90,7 @@ const onShowInsert = () => {
 }
 
 async function onUpdate() {
-  const r = await update(bookId.value, {
+  const r = await updateById(bookId.value, {
     title: book.title,
     authors: book.authors,
     publisher: book.publisher
@@ -113,7 +107,7 @@ async function onUpdate() {
 }
 
 async function onDelete() {
-  const r = await drop(bookId.value)
+  const r = await deleteById(bookId.value)
   if (r.code == 200) {
     // 成功
     message.info("删除成功")

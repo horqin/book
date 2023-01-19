@@ -2,8 +2,8 @@
 import {reactive, ref} from "vue";
 import {message} from "ant-design-vue";
 
-import {login, register} from "../api/user";
 import router from "../router";
+import {login, register} from "../api/user";
 
 // 状态
 const status = ref(true)
@@ -30,7 +30,7 @@ async function onClick() {
     // 注册
     const r = await register(user)
     if (r.code == 200) {
-      // 成功
+      // 成功，转为登录的状态
       message.info("注册成功")
       status.value = true
     } else {

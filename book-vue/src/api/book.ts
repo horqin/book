@@ -5,27 +5,27 @@ import Page from "../common/Page";
 import Book from "../domain/Book";
 
 export async function create(book: Book): Promise<SaResult<undefined>> {
-    const {data} = await axios.post("/api/book/create", book)
+    const {data} = await axios.post("/api/book", book)
     return data
 }
 
-export async function drop(id: number): Promise<SaResult<undefined>> {
-    const {data} = await axios.post(`/api/book/delete/${id}`)
+export async function deleteById(id: number): Promise<SaResult<undefined>> {
+    const {data} = await axios.delete(`/api/book/${id}`)
     return data
 }
 
-export async function update(id: number, book: Book): Promise<SaResult<undefined>> {
-    const {data} = await axios.post(`/api/book/update/${id}`, book)
+export async function updateById(id: number, book: Book): Promise<SaResult<undefined>> {
+    const {data} = await axios.put(`/api/book/${id}`, book)
     return data
 }
 
-export async function search(id: number): Promise<SaResult<Book>> {
-    const {data} = await axios.get(`/api/book/search/${id}`)
+export async function readById(id: number): Promise<SaResult<Book>> {
+    const {data} = await axios.get(`/api/book/${id}`)
     return data
 }
 
-export async function searchWithPage(current = 1, size = 5): Promise<SaResult<Page<Book>>> {
-    const {data} = await axios.get(`/api/book/search`, {
+export async function readBatchByPage(current = 1, size = 5): Promise<SaResult<Page<Book>>> {
+    const {data} = await axios.get(`/api/book`, {
         params: {
             current: current,
             size: size
@@ -34,7 +34,7 @@ export async function searchWithPage(current = 1, size = 5): Promise<SaResult<Pa
     return data
 }
 
-export async function searchWithSimplePage(keyword: string, current = 1, size = 5): Promise<SaResult<Page<Book>>> {
+export async function readBatchByPageWithKeyword(keyword: string, current = 1, size = 5): Promise<SaResult<Page<Book>>> {
     const {data} = await axios.get(`/api/book`, {
         params: {
             keyword: keyword,
