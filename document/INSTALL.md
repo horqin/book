@@ -57,7 +57,7 @@ satoken=18b0830f-1671-4f56-9186-be3a5c00e0dd
 
 ```
 $ cd document/utils
-$ python init.py --file init.csv --url http://windows:8080/book/create --cookie satoken=18b0830f-1671-4f56-9186-be3a5c00e0dd
+$ python init.py --file init.csv --url http://windows:8080/book --cookie satoken=18b0830f-1671-4f56-9186-be3a5c00e0dd
 ```
 
 7，在终端处，访问 Vue.js 项目，查看添加情况，
