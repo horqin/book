@@ -7,7 +7,7 @@ import com.example.book.domain.Book;
 public interface BookService extends IService<Book> {
 
     /**
-     * 创建
+     * 增加
      * @param book 书籍
      * @return 成功或失败
      */
@@ -17,54 +17,54 @@ public interface BookService extends IService<Book> {
      * 删除
      * @param id 主键
      */
-    boolean delete(Long id);
+    boolean deleteById(Long id);
 
     /**
-     * 更新
+     * 改正
      * @param id 主键
      * @param book 书籍
      * @return 成功或失败
      */
-    boolean update(Long id, Book book);
+    boolean updateById(Long id, Book book);
 
     /**
-     * 搜索
+     * 查询
      * @param id 主键
      * @return 书籍
      */
-    Book search(Long id);
+    Book readById(Long id);
 
     /**
-     * 分页搜索
-     * @param current 当前的页码
-     * @param size 总数
+     * 分页查询
+     * @param current 当前页码
+     * @param size 每页数量
      * @return 分页的书籍
      */
-    IPage<Book> search(Integer current, Integer size);
+    IPage<Book> readBatchByPage(Integer current, Integer size);
 
     /**
-     * 简单导入全部
+     * ES 导入
      */
     void esImportAll();
 
     /**
-     * 简单创建
+     * ES 增加
      * @param book 书籍
      */
     void esCreate(Book book);
 
     /**
-     * 简单删除
+     * ES 删除
      * @param id 主键
      */
-    void esDelete(Long id);
+    void esDeleteById(Long id);
 
     /**
-     * 分页简单搜索
+     * ES 带关键词的分页查询
      * @param keyword 关键字
-     * @param current 当前的页码
-     * @param size 总数
+     * @param current 当前页码
+     * @param size 每页数量
      * @return 分页的书籍
      */
-    IPage<Book> esSearch(String keyword, Integer current, Integer size);
+    IPage<Book> esReadBatchByPageWithKeyword(String keyword, Integer current, Integer size);
 }

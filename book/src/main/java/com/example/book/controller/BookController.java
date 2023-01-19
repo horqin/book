@@ -4,6 +4,7 @@ import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.book.domain.Book;
 import com.example.book.service.BookService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,62 +15,62 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @PostMapping("/create")
+    @PostMapping
     @ResponseBody
     public SaResult create(@RequestBody Book book) {
         if (bookService.create(book)) {
             return SaResult.ok();
         }
-        return SaResult.error("创建失败");
+        return SaResult.error("增加失败");
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseBody
-    public SaResult delete(@PathVariable Long id) {
-        if (bookService.delete(id)) {
+    public SaResult deleteById(@PathVariable Long id) {
+        if (bookService.deleteById(id)) {
             return SaResult.ok();
         }
         return SaResult.error("删除失败");
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/{id}")
     @ResponseBody
-    public SaResult update(@PathVariable Long id, @RequestBody Book book) {
-        if (bookService.update(id, book)) {
+    public SaResult updateById(@PathVariable Long id, @RequestBody Book book) {
+        if (bookService.updateById(id, book)) {
             return SaResult.ok();
         }
-        return SaResult.error("更新失败");
+        return SaResult.error("改正失败");
     }
 
-    @GetMapping("/search/{id}")
+    @GetMapping("/{id}")
     @ResponseBody
-    public SaResult search(@PathVariable Long id) {
+    public SaResult readById(@PathVariable Long id) {
         Book book;
-        if ((book = bookService.search(id)) != null) {
+        if ((book = bookService.readById(id)) != null) {
             return SaResult.ok().setData(book);
         }
-        return SaResult.error("搜索失败");
+        return SaResult.error("读取失败");
     }
 
-    @GetMapping("/search")
+    @GetMapping
     @ResponseBody
-    public SaResult search(@RequestParam(defaultValue = "1") Integer current, @RequestParam(defaultValue = "5") Integer size) {
-        IPage<Book> books = bookService.search(current, size);
+    public SaResult readBatchByPage(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false, defaultValue = "1") Integer current,
+            @RequestParam(required = false, defaultValue = "5") Integer size) {
+        IPage<Book> books;
+        if (StringUtils.isEmpty(keyword)) {
+            books = bookService.readBatchByPage(current, size);
+        } else {
+            books = bookService.esReadBatchByPageWithKeyword(keyword, current, size);
+        }
         return SaResult.ok().setData(books);
     }
 
     @GetMapping("/importAll")
     @ResponseBody
-    public SaResult esImportAll() {
+    public SaResult importAll() {
         bookService.esImportAll();
         return SaResult.ok();
-    }
-
-    @GetMapping
-    @ResponseBody
-    public SaResult search(@RequestParam String keyword,
-            @RequestParam(defaultValue = "1") Integer current, @RequestParam(defaultValue = "5") Integer size) {
-        IPage<Book> books = bookService.esSearch(keyword, current, size);
-        return SaResult.ok().setData(books);
     }
 }

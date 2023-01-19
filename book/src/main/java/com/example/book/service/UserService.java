@@ -1,6 +1,5 @@
 package com.example.book.service;
 
-import cn.dev33.satoken.stp.SaTokenInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.book.domain.User;
 
@@ -16,7 +15,7 @@ public interface UserService extends IService<User> {
     /**
      * 登出
      */
-    boolean logout();
+    void logout();
 
     /**
      * 注册

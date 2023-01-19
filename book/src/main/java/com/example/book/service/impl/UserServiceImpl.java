@@ -31,9 +31,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean logout() {
+    public void logout() {
         StpUtil.logout();
-        return !StpUtil.isLogin();
     }
 
     @Override

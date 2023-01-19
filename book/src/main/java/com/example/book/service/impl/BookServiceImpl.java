@@ -24,22 +24,22 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean deleteById(Long id) {
         return this.removeById(id);
     }
 
     @Override
-    public boolean update(Long id, Book book) {
+    public boolean updateById(Long id, Book book) {
         return this.update(book, new LambdaUpdateWrapper<Book>().eq(Book::getId, id));
     }
 
     @Override
-    public Book search(Long id) {
+    public Book readById(Long id) {
         return this.getById(id);
     }
 
     @Override
-    public IPage<Book> search(Integer current, Integer size) {
+    public IPage<Book> readBatchByPage(Integer current, Integer size) {
         return this.page(new Page<>(current, size));
     }
 
@@ -58,12 +58,12 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
     }
 
     @Override
-    public void esDelete(Long id) {
+    public void esDeleteById(Long id) {
         bookRepository.deleteById(id);
     }
 
     @Override
-    public IPage<Book> esSearch(String keyword, Integer current, Integer size) {
+    public IPage<Book> esReadBatchByPageWithKeyword(String keyword, Integer current, Integer size) {
         org.springframework.data.domain.Page<Book> page = bookRepository.findByTitle(keyword, PageRequest.of(current, size));
         return Pages.convert(page);
     }

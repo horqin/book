@@ -19,16 +19,14 @@ public class UserController {
         if (userService.login(user)) {
             return SaResult.ok();
         }
-        return SaResult.error("用户名或者密码错误");
+        return SaResult.error("用户无法登录");
     }
 
     @PostMapping("/logout")
     @ResponseBody
     public SaResult logout() {
-        if (userService.logout()) {
-            return SaResult.ok();
-        }
-        return SaResult.error("用户登出失败");
+        userService.logout();
+        return SaResult.ok();
     }
 
     @PostMapping("/register")
