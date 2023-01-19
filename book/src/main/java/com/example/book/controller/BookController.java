@@ -69,7 +69,7 @@ public class BookController {
     @ResponseBody
     public SaResult search(@RequestParam String keyword,
             @RequestParam(defaultValue = "1") Integer current, @RequestParam(defaultValue = "5") Integer size) {
-        IPage<Book> books = bookService.esSearch(keyword, current - 1, size);
+        IPage<Book> books = bookService.esSearch(keyword, current, size);
         return SaResult.ok().setData(books);
     }
 }

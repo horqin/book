@@ -7,6 +7,9 @@ spring:
   kafka:
     bootstrap-servers: centos:9093
   data:
+    web:
+      pageable:
+        one-indexed-parameters: true
     elasticsearch:
       repositories:
         enabled: true
