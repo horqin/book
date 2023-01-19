@@ -6,7 +6,7 @@ import com.example.book.domain.User;
 public interface UserService extends IService<User> {
 
     /**
-     * 登出
+     * 登录
      * @param user 用户
      * @return 成功或失败
      */

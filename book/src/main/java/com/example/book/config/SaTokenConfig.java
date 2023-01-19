@@ -19,7 +19,7 @@ public class SaTokenConfig {
     public SaServletFilter saServletFilter() {
         return new SaServletFilter()
                 .addInclude("/**")
-                // 允许跨域
+                // 跨域检查
                 .setBeforeAuth(auth -> SaHolder.getResponse().setHeader("X-XSS-Protection", "1; mode=block"))
                 // 认证检查
                 .setAuth(auth -> SaRouter.match("/**").notMatch(whitelist).check(StpUtil::checkLogin))

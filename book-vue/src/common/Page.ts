@@ -3,5 +3,5 @@ export default interface Page<T> {
     size: number // 每页数量
     pages: number // 总页数
     total: number // 总条数
-    records: T[] // 分页数据
+    records: Array<T> // 分页数据
 }

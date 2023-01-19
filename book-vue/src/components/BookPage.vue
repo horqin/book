@@ -3,15 +3,14 @@ import {onMounted, reactive, ref} from "vue";
 import {message} from "ant-design-vue";
 
 import router from "../router";
-import Book from "../domain/Book"
+import Page from "../common/Page";
 import {logout} from "../api/user";
-import {create, deleteById, updateById, readBatchByPage, readBatchByPageWithKeyword} from "../api/book";
+import Book from "../domain/Book";
+import {create, deleteById, updateById, readBatchByPage} from "../api/book";
 
-// 关键词
+// 搜索
 const keyword = ref("")
-
-// 分页
-const page = reactive({
+const page = reactive<Page<Book>>({
   current: 1,
   size: 5,
   pages: 0,
@@ -19,66 +18,52 @@ const page = reactive({
   records: Array<Book>()
 })
 
-// 弹出框
-const visibleUpdate = ref(false);
-const visibleDelete = ref(false);
+// 状态
 const visibleInsert = ref(false)
+const visibleDelete = ref(false)
+const visibleUpdate = ref(false)
 
-// 弹出框中的数据
+// 书籍
 const bookId = ref(0)
-const book = reactive({
+const book = reactive<Book>({
   title: '',
   authors: '',
   publisher: ''
 })
 
-// 初始化：分页搜索，无关键词
 onMounted(onSearch)
 
-async function onClick() {
+async function onLogout() {
   await logout()
   message.info("登出成功")
+  // 跳转页面
   await router.replace("/user")
 }
 
 async function onSearch() {
-  if (keyword.value.length === 0) {
-    // 搜索
-    const r = await readBatchByPage(page.current, page.size)
-    if (r.code == 200) {
-      // 成功
-      page.pages = r.data.pages
-      page.total = r.data.total
-      page.records = r.data.records
-    } else {
-      // 失败
-      message.warn("检索失败")
-    }
+  const r = await readBatchByPage(keyword.value, page.current, page.size)
+  if (r.code === 200) {
+    page.pages = r.data.pages
+    page.total = r.data.total
+    page.records = r.data.records
   } else {
-    // 简单搜索
-    const r = await readBatchByPageWithKeyword(keyword.value, page.current, page.size)
-    if (r.code == 200) {
-      // 成功
-      page.pages = r.data.pages
-      page.total = r.data.total
-      page.records = r.data.records
-    } else {
-      // 失败
-      message.warn("检索失败")
-    }
+    message.warn("检索失败")
   }
 }
 
-const onShowUpdate = (id: number, recode: Book) => {
+const onShowUpdate = (id: number, record: Book) => {
   bookId.value = id
-  book.title = recode.title
-  book.authors = recode.authors
-  book.publisher = recode.publisher
+  book.title = record.title
+  book.authors = record.authors
+  book.publisher = record.publisher
   visibleUpdate.value = true
 }
 
-const onShowDelete = (id: number) => {
+const onShowDelete = (id: number, record: Book) => {
   bookId.value = id
+  book.title = record.title
+  book.authors = record.authors
+  book.publisher = record.publisher
   visibleDelete.value = true
 }
 
@@ -96,11 +81,10 @@ async function onUpdate() {
     publisher: book.publisher
   })
   if (r.code == 200) {
-    // 成功
     message.info("修改成功")
+    // 更新搜索结果
     await onSearch();
   } else {
-    // 失败
     message.warn(r.msg)
   }
   visibleUpdate.value = false
@@ -109,11 +93,10 @@ async function onUpdate() {
 async function onDelete() {
   const r = await deleteById(bookId.value)
   if (r.code == 200) {
-    // 成功
     message.info("删除成功")
+    // 更新搜索结果
     await onSearch()
   } else {
-    // 失败
     message.warn(r.msg)
   }
   visibleDelete.value = false
@@ -126,11 +109,8 @@ async function onInsert() {
     publisher: book.publisher
   })
   if (r.code == 200) {
-    // 成功
     message.info("新增成功")
-    await onSearch();
   } else {
-    // 失败
     message.warn(r.msg)
   }
   visibleInsert.value = false
@@ -140,14 +120,14 @@ async function onInsert() {
 <template>
   <a-page-header title="文献管理">
     <template #extra>
-      <a-button type="primary" @click="onClick">登出</a-button>
+      <a-button type="primary" @click="onLogout">登出</a-button>
     </template>
   </a-page-header>
 
   <div class="custom">
     <a-input-search v-model:value="keyword" @search="onSearch"/>
 
-    <a-button type="primary" @click="onShowInsert">新增</a-button>
+    <a-button type="primary" @click="onShowInsert()">新增</a-button>
 
     <a-table :columns="[
       { title: '篇名', dataIndex: 'title' },
@@ -157,8 +137,8 @@ async function onInsert() {
       ]" :rowKey='record=>record.id' :data-source="page.records" :pagination="false">
       <template #name="{ record }">
         <div style="text-align: center">
-          <a-button type="primary" @click="onShowDelete(record.id)">删除</a-button>
-          <a-button type="primary" @click="onShowUpdate(record.id, record)" style="margin-left: 20px"> 修改</a-button>
+          <a-button type="primary" @click="onShowDelete(record.id, record)">删除</a-button>
+          <a-button type="primary" @click="onShowUpdate(record.id, record)" style="margin-left: 20px">修改</a-button>
         </div>
       </template>
     </a-table>
@@ -182,7 +162,19 @@ async function onInsert() {
     </a-form>
   </a-modal>
 
-  <a-modal v-model:visible="visibleDelete" title="删除" @ok="onDelete"/>
+  <a-modal v-model:visible="visibleDelete" title="删除" @ok="onDelete">
+    <a-form>
+      <a-form-item label="篇名：">
+        <a-input v-model:value="book.title" :disabled="true">{{ book.title }}}</a-input>
+      </a-form-item>
+      <a-form-item label="作者：">
+        <a-input v-model:value="book.authors" :disabled="true">{{ book.authors }}}</a-input>
+      </a-form-item>
+      <a-form-item label="刊名：">
+        <a-input v-model:value="book.publisher" :disabled="true">{{ book.publisher }}}</a-input>
+      </a-form-item>
+    </a-form>
+  </a-modal>
 
   <a-modal v-model:visible="visibleInsert" title="新增" @ok="onInsert">
     <a-form>

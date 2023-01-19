@@ -24,17 +24,7 @@ export async function readById(id: number): Promise<SaResult<Book>> {
     return data
 }
 
-export async function readBatchByPage(current = 1, size = 5): Promise<SaResult<Page<Book>>> {
-    const {data} = await axios.get(`/api/book`, {
-        params: {
-            current: current,
-            size: size
-        }
-    })
-    return data
-}
-
-export async function readBatchByPageWithKeyword(keyword: string, current = 1, size = 5): Promise<SaResult<Page<Book>>> {
+export async function readBatchByPage(keyword: string, current = 1, size = 5): Promise<SaResult<Page<Book>>> {
     const {data} = await axios.get(`/api/book`, {
         params: {
             keyword: keyword,
