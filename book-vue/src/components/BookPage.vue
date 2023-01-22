@@ -43,12 +43,20 @@ async function onLogout() {
 async function onSearch() {
   const r = await readBatchByPage(keyword.value, page.current, page.size)
   if (r.code === 200) {
+    page.current = r.data.current
+    page.size = r.data.size
     page.pages = r.data.pages
     page.total = r.data.total
     page.records = r.data.records
   } else {
     message.warn("检索失败")
   }
+}
+
+async function onSearchWithKeyword() {
+  page.current = 1
+  page.size = 5
+  await onSearch()
 }
 
 const onShowUpdate = (id: number, record: Book) => {
@@ -110,6 +118,8 @@ async function onInsert() {
   })
   if (r.code == 200) {
     message.info("新增成功")
+    // 更新搜索结果
+    await onSearch()
   } else {
     message.warn(r.msg)
   }
@@ -125,7 +135,7 @@ async function onInsert() {
   </a-page-header>
 
   <div class="custom">
-    <a-input-search v-model:value="keyword" @search="onSearch"/>
+    <a-input-search v-model:value="keyword" @search="onSearchWithKeyword"/>
 
     <a-button type="primary" @click="onShowInsert()">新增</a-button>
 
