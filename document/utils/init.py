@@ -10,7 +10,7 @@ args = parser.parse_args()
 
 with open(args.file, encoding='utf-8') as f:
     for item in csv.reader(f):
-        requests.put(url=args.url, json={
+        requests.post(url=args.url, json={
                 "title": item[0],
                 "authors": item[1],
                 "publisher": item[2]
