@@ -23,4 +23,10 @@ public interface UserService extends IService<User> {
      * @return 成功或失败
      */
     boolean register(User user);
+
+    /**
+     * 获取当前用户
+     * @return 当前用户
+     */
+    User currentUser();
 }

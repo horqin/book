@@ -45,4 +45,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return true;
     }
+
+    @Override
+    public User currentUser() {
+        Long id = StpUtil.getLoginIdAsLong();
+        return this.getById(id);
+    }
 }

@@ -10,6 +10,8 @@ spring:
     elasticsearch:
       repositories:
         enabled: true
+    mongodb:
+      uri: mongodb://root:root@centos:27017/db?authSource=admin
   elasticsearch:
     uris: centos:9200
 
