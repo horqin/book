@@ -32,6 +32,15 @@ services:
       - kafka
   
   # nosql
+  mongo:
+    image: mongo:6.0.4
+    ports:
+      - 27017:27017
+    volumes:
+      - /data/mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
   elasticsearch:
     image: elasticsearch:7.17.7
     ports: 
