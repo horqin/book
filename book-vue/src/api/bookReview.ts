@@ -5,12 +5,12 @@ import BookReview from "../domain/BookReview";
 import BookReviewReply from "../domain/BookReviewReply";
 
 export async function createReview(bookReview: BookReview): Promise<SaResult<undefined>> {
-    const {data} = await axios.post("/api/book-review/review", bookReview)
+    const {data} = await axios.post("/api/book-review", bookReview)
     return data
 }
 
 export async function createReviewReplyById(id: string, bookReviewReply: BookReviewReply): Promise<SaResult<undefined>> {
-    const {data} = await axios.post(`/api/book-review/review-reply/${id}`, bookReviewReply)
+    const {data} = await axios.put(`/api/book-review/${id}`, bookReviewReply)
     return data
 }
 

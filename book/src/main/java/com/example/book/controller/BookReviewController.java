@@ -16,7 +16,7 @@ public class BookReviewController {
     @Autowired
     private BookReviewService bookReviewService;
 
-    @PostMapping("/review")
+    @PostMapping
     @ResponseBody
     public SaResult createReview(@RequestBody BookReview bookReview) {
         if (bookReviewService.createReview(bookReview)) {
@@ -25,7 +25,7 @@ public class BookReviewController {
         return SaResult.error("增加评论失败");
     }
 
-    @PostMapping("/review-reply/{id}")
+    @PutMapping("/{id}")
     @ResponseBody
     public SaResult createReviewReplyById(@PathVariable String id, @RequestBody BookReviewReply bookReviewReply) {
         if (bookReviewService.createReviewReplyById(id, bookReviewReply)) {

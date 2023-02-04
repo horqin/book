@@ -62,7 +62,7 @@ public class BookController {
         if (StringUtils.isEmpty(keyword)) {
             books = bookService.readBatchByPage(current, size);
         } else {
-            books = bookService.esReadBatchByPageWithKeyword(keyword, current - 1, size);
+            books = bookService.esReadBatchByPageWithKeyword(keyword, current, size);
         }
         return SaResult.ok().setData(books);
     }

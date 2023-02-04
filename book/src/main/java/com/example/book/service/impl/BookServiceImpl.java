@@ -64,7 +64,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
 
     @Override
     public IPage<Book> esReadBatchByPageWithKeyword(String keyword, Integer current, Integer size) {
-        org.springframework.data.domain.Page<Book> page = bookRepository.findByTitle(keyword, PageRequest.of(current, size));
+        org.springframework.data.domain.Page<Book> page = bookRepository.findByTitle(keyword, PageRequest.of(current - 1, size));
         return Pages.convert(page);
     }
 }
