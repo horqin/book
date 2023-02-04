@@ -1,6 +1,6 @@
 # 简介
 
- 一个支持用户注册、登录、登出，文献增加、删除、更新、（关键词）搜索、评论（支持回复）的系统。包括前端和后端两个部分，分别基于 Vue 3 和 Spring Boot 实现。在后端中，认证授权基于 Sa-Token，MySQL 与 Elasticsearch 之间的数据同步基于 Canal，MongoDB 独立用于评论的保存和查询。
+一个支持用户注册、登录、登出，文献增加、删除、更新、（关键词）搜索、评论（支持回复）的系统。包括前端和后端两个部分，分别基于 Vue 3 和 Spring Boot 实现。在后端中，认证授权基于 Sa-Token，MySQL 与 Elasticsearch 之间的数据同步基于 Canal，MongoDB 独立用于评论的保存和查询，另外，使用 ELK 进行日志的采集和分析，基于 AOP 记录用户和访问的情况。
 
 ![](./img/book.gif)
 
@@ -34,9 +34,10 @@
 
 |名称|简介|版本|
 |:-:|:-:|:-:|
-|MySQL|数据库|5.x|
+|MySQL|SQL 数据库|5.x|
 |Canal|数据同步|1.x|
-|Elasticsearch|搜索引擎|7.x|
+|MongoDB|NoSQL 数据库|6.x|
+|Elasticsearch(ELK Stack)|搜索引擎、日志系统|7.x|
 |Kafka|消息队列|2.x|
 |Nginx|项目部署|1.x|
 

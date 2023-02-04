@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 引用默认日志配置 -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <!-- 使用默认的控制台日志输出实现 -->
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>centos:4560</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <logger name="com.example.book.log.WebLogAspect" level="DEBUG">
+        <appender-ref ref="stash"/>
+    </logger>
+</configuration>
