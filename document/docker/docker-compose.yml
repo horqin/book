@@ -37,7 +37,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - /data/mongo:/data/db # MongoDB 持久化
+      - ./data/mongo:/data/db # MongoDB 持久化
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
