@@ -1,6 +1,7 @@
 package com.example.book.log;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.util.SaResult;
 import com.example.book.utils.Requests;
 import com.google.gson.Gson;
 import lombok.Data;
@@ -49,7 +50,12 @@ public class WebLogAspect {
         long start = System.currentTimeMillis();
  
         Object params = joinPoint.getArgs();
-        Object result = joinPoint.proceed();
+        Object result;
+        try {
+            result = joinPoint.proceed();
+        } catch (RuntimeException e) {
+            result = SaResult.error(e.getMessage());
+        }
 
         // 访问参数
         webLog.setParam(new Gson().toJson(params));
