@@ -2,8 +2,10 @@ package com.example.book.config;
 
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.filter.SaServletFilter;
+import cn.dev33.satoken.jwt.StpLogicJwtForStateless;
 import cn.dev33.satoken.router.SaHttpMethod;
 import cn.dev33.satoken.router.SaRouter;
+import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,5 +47,10 @@ public class SaTokenConfig {
                 .setAuth(o -> SaRouter.match("/**").notMatch(whitelist).check(StpUtil::checkLogin))
                 // 异常处理
                 .setError(e -> SaResult.error(e.getMessage()));
+    }
+
+    @Bean
+    public StpLogic getStpLogicJwt() {
+        return new StpLogicJwtForStateless();
     }
 }

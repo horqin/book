@@ -15,6 +15,9 @@ spring:
   elasticsearch:
     uris: centos:9200
 
+sa-token:
+  jwt-secret-key: jwt-secret-key
+
 properties:
   salt: salt
   whitelist: /user/**
