@@ -11,6 +11,9 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
+
 @Schema(title = "book")
 @Document(indexName = "i_book")
 @TableName("t_book")
@@ -19,15 +22,20 @@ public class Book {
     @Schema(title = "主键")
     @Id
     @TableId(type = IdType.AUTO)
+    @Null
     private Long id;
     @Schema(title = "篇名")
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
+    @NotBlank
     private String title;
     @Schema(title = "作者")
+    @NotBlank
     private String authors;
     @Schema(title = "刊名")
+    @NotBlank
     private String publisher;
     @Schema(title = "逻辑删除")
     @TableLogic(value = "0", delval = "1")
+    @Null
     private Integer deleted;
 }

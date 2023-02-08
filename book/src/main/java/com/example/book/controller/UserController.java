@@ -6,6 +6,8 @@ import com.example.book.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -15,7 +17,7 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseBody
-    public SaResult login(@RequestBody User user) {
+    public SaResult login(@Valid @RequestBody User user) {
         if (userService.login(user)) {
             return SaResult.ok();
         }
@@ -31,7 +33,7 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseBody
-    public SaResult register(@RequestBody User user) {
+    public SaResult register(@Valid @RequestBody User user) {
         if (userService.register(user)) {
             return SaResult.ok();
         }

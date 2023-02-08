@@ -7,6 +7,7 @@ import com.example.book.service.BookReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class BookReviewController {
 
     @PostMapping
     @ResponseBody
-    public SaResult createReview(@RequestBody BookReview bookReview) {
+    public SaResult createReview(@Valid @RequestBody BookReview bookReview) {
         if (bookReviewService.createReview(bookReview)) {
             return SaResult.ok();
         }
@@ -27,7 +28,7 @@ public class BookReviewController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public SaResult createReviewReplyById(@PathVariable String id, @RequestBody BookReviewReply bookReviewReply) {
+    public SaResult createReviewReplyById(@PathVariable String id, @Valid @RequestBody BookReviewReply bookReviewReply) {
         if (bookReviewService.createReviewReplyById(id, bookReviewReply)) {
             return SaResult.ok();
         }

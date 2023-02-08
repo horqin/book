@@ -8,6 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -17,7 +19,7 @@ public class BookController {
 
     @PostMapping
     @ResponseBody
-    public SaResult create(@RequestBody Book book) {
+    public SaResult create(@Valid @RequestBody Book book) {
         if (bookService.create(book)) {
             return SaResult.ok();
         }
@@ -35,7 +37,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public SaResult updateById(@PathVariable Long id, @RequestBody Book book) {
+    public SaResult updateById(@PathVariable Long id, @Valid @RequestBody Book book) {
         if (bookService.updateById(id, book)) {
             return SaResult.ok();
         }
