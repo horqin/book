@@ -6,6 +6,13 @@ import com.example.book.domain.User;
 public interface UserService extends IService<User> {
 
     /**
+     * 注册
+     * @param user 用户
+     * @return 成功或失败
+     */
+    boolean register(User user);
+
+    /**
      * 登录
      * @param user 用户
      * @return 成功或失败
@@ -13,16 +20,10 @@ public interface UserService extends IService<User> {
     boolean login(User user);
 
     /**
-     * 登出
-     */
-    void logout();
-
-    /**
-     * 注册
-     * @param user 用户
+     * 是否登录
      * @return 成功或失败
      */
-    boolean register(User user);
+    boolean isLogin();
 
     /**
      * 获取当前用户

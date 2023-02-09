@@ -17,6 +17,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private String salt;
 
     @Override
+    public boolean register(User user) {
+        user.setPassword(SaSecureUtil.sha256(salt + user.getPassword()));
+        try {
+            this.save(user);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public boolean login(User user) {
         user.setPassword(SaSecureUtil.sha256(salt + user.getPassword()));
         User match = this.getOne(new LambdaQueryWrapper<User>()
@@ -31,19 +42,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public void logout() {
-        StpUtil.logout();
-    }
-
-    @Override
-    public boolean register(User user) {
-        user.setPassword(SaSecureUtil.sha256(salt + user.getPassword()));
-        try {
-            this.save(user);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+    public boolean isLogin() {
+        return StpUtil.isLogin();
     }
 
     @Override

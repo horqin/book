@@ -49,7 +49,7 @@ const bookReviewReply = reactive({
 onMounted(onSearch)
 
 async function onLogout() {
-  await logout()
+  logout()
   message.info("登出成功")
   // 跳转页面
   await router.replace("/user")

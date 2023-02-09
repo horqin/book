@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {computed, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref} from "vue";
 import {message} from "ant-design-vue";
 
 import router from "../router";
 import User from "../domain/User";
-import {login, register} from "../api/user";
+import {login, isLogin, register} from "../api/user";
 
 // 用户
 const user = reactive<User>({
@@ -61,6 +61,14 @@ async function status_entry() {
       break
   }
 }
+
+onMounted(async () => {
+  const r = await isLogin()
+  if (r.data) {
+    // 跳转页面
+    await router.replace({name: "book"})
+  }
+})
 </script>
 
 <template>

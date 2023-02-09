@@ -24,11 +24,11 @@ public class UserController {
         return SaResult.error("用户无法登录");
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/isLogin")
     @ResponseBody
-    public SaResult logout() {
-        userService.logout();
-        return SaResult.ok();
+    public SaResult isLogin() {
+        boolean isLogin = userService.isLogin();
+        return SaResult.ok().setData(isLogin);
     }
 
     @PostMapping("/register")
