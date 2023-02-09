@@ -13,6 +13,6 @@ public class BookReviewReply {
     @Null
     private String username;
     @Schema(title = "回复")
-    @NotBlank
+    @NotBlank(message = "回复非空")
     private String reply;
 }

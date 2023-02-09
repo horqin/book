@@ -19,10 +19,10 @@ public class User {
     @Null
     private Long id;
     @Schema(title = "用户名")
-    @NotBlank
+    @NotBlank(message = "用户名非空")
     private String username;
     @Schema(title = "密码")
-    @NotBlank
+    @NotBlank(message = "密码非空")
     private String password;
     @TableLogic(value = "0", delval = "1")
     @Schema(title = "逻辑删除")

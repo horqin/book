@@ -28,7 +28,7 @@ public class BookReview {
     @Null
     private String username;
     @Schema(title = "评论")
-    @NotBlank
+    @NotBlank(message = "评论非空")
     private String review;
     @Schema(title = "回复列表")
     @Null

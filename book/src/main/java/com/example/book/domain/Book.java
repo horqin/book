@@ -26,13 +26,13 @@ public class Book {
     private Long id;
     @Schema(title = "篇名")
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
-    @NotBlank
+    @NotBlank(message = "篇名非空")
     private String title;
     @Schema(title = "作者")
-    @NotBlank
+    @NotBlank(message = "作者非空")
     private String authors;
     @Schema(title = "刊名")
-    @NotBlank
+    @NotBlank(message = "刊名非空")
     private String publisher;
     @Schema(title = "逻辑删除")
     @TableLogic(value = "0", delval = "1")
